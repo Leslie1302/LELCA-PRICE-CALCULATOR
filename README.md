@@ -1,2 +1,2 @@
 # LELCA-PRICE-CALCULATOR
-This is a program that will aid in the calculation of the price of blocks for block molding factories
+This is a program that will aid in the calculation of the price of blocks for block molding factories (in this case LELCA Block Molding and Construction Company Limited); it takes into account the price of the materials and other costs, then the profit margin a company might want to apply to adjust their rates to be consistent with the market when there are inflations on the price of materials
