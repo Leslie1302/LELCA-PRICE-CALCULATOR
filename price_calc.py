@@ -21,6 +21,7 @@ block_type = st.selectbox("Select the block type:", options=list(block_types.key
 cement_unitprice = st.number_input("What is the price of cement today?", min_value=0, step=1)
 trips_sand_unitprice = st.number_input("What is the price of a trip of sand today?", min_value=0, step=50)
 labor = st.number_input("How much will labor cost you today?", min_value=0, step=5)
+miscellaneous_perc = st.number_input("What percentage of the total cost would go be miscellaneous?", min_value=0, step=1)
 
 # Step 2: Initialize session state for calculations
 if 'total_cost' not in st.session_state:
@@ -33,13 +34,6 @@ if 'margin' not in st.session_state:
     st.session_state.margin = 0
 if 'num_blocks' not in st.session_state:
     st.session_state.num_blocks = 1  # Default to 1 to prevent the error
-
-# Step 3: Calculate costs and display outputs
-if st.button("Calculate Costs"):
-    cement_cost = cement_quantity * cement_unitprice
-    sand_cost = trips_sand * trips_sand_unitprice
-    miscellaneous = 0.1 * (cement_cost + sand_cost + labor)
-    total_cost = cement_cost + sand_cost + labor + miscellaneous
 
     # Save to session state
     st.session_state.total_cost = total_cost
@@ -59,6 +53,14 @@ if num_blocks < 1:
 st.session_state.margin = margin
 st.session_state.num_blocks = num_blocks
 
+# Step 3: Calculate costs and display outputs
+if st.button("Calculate Costs"):
+    cement_cost = cement_quantity * cement_unitprice
+    sand_cost = trips_sand * trips_sand_unitprice
+    miscellaneous = miscellaneous_perc * (cement_cost + sand_cost + labor)
+    total_cost = cement_cost + sand_cost + labor + miscellaneous
+
+
 # Calculate cost per block and final price only after inputs are filled
 if st.session_state.total_cost > 0 and num_blocks > 0:
     cost_per_block = st.session_state.total_cost / num_blocks
@@ -71,6 +73,8 @@ if st.session_state.total_cost > 0 and num_blocks > 0:
     # Step 4: Output results
     st.write(f"Production Cost per Block: {st.session_state.cost_per_block:.2f}")
     st.write(f"Final Selling Price per Block: {st.session_state.final_price_per_block:.2f}")
+
+
 
     # Step 5: Option to download results as CSV
     data = {
